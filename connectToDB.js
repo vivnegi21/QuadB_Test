@@ -1,0 +1,26 @@
+const mongoose = require('mongoose');
+
+let isConnected = false;   //var to check status
+
+const connectToDB = async () => {
+    // Set strict query mode for Mongoose to prevent unknown field queries.
+    mongoose.set("strictQuery", true);
+  
+    if (!process.env.MONGO_DB_URL) return console.log("Missing MongoDB URL");
+  
+    // If the connection is already established, return without creating a new connection.
+    if (isConnected) {
+      console.log("MongoDB connection already established");
+      return;
+    }
+  
+    try {
+      await mongoose.connect(process.env.MONGO_DB_URL);
+  
+      isConnected = true; // Set the connection status to true
+      console.log("MongoDB connected");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+module.exports = connectToDB; 

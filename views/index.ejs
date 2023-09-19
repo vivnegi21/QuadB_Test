@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <title>Tailwind + EJS</title>
+    <style>
+        .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #3dc6c1;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2e3241;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px white;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  -radius: 34px;
+}
+
+.slider.round:before {
+  -radius: 50%;
+}
+</style>
+</head>
+
+<body class=" flex flex-col gap-2 p-2 bg-background w-full px-4">
+    <!-- Header -->
+    <div class="flex w-full max-md:flex-col gap-3 max-md:justify-center max-md:items-center">
+        <div class="flex  w-1/3 max-md:w-full p-2 items-center ">
+            <img src="/assets/asset 0.png" class="h-fit pr-10 w-fit items-center " />
+        </div>
+        <div class=" flex gap-4 max-md:w-full  w-1/3  items-center justify-center">
+            <select name="inr" id="inr" class="px-4 py-2 rounded-lg bg-sltbtn text-white">
+                <option value="volvo" class="px-4 py-1 rounded-lg text-sltbtn bg-white">INR</option>
+              </select>
+            <select name="to" id="to" class="px-4 py-2 rounded-lg bg-sltbtn text-white">
+                <option value="BTC" class="px-4 py-1 rounded-lg" >BTC</option>
+                <option value="ETH">ETH</option>
+                <option value="USDT">USDT</option>
+                <option value="XRP">XRP</option>
+                <option value="TRX">TRX</option>
+                <option value="DASH">DASH</option>
+                <option value="ZEC">ZEC</option>
+                <option value="XEM">XEM</option>
+                <option value="IOST">IOST</option>
+                <option value="WIN">WIN</option>
+                <option value="BTT">BTT</option>
+                <option value="WRX">WRX</option>
+            </select>
+            <button class=" bg-sltbtn hover:bg-sltbtn/50 text-white py-2 px-4 rounded-lg">BUY BTC</button>
+        </div>
+
+        <div class="w-1/3  flex max-md:w-full px-4 items-center justify-end  gap-5">
+            <button class=" px-4 py-2 bg-primary text-white hover:bg-primary/80 rounded-lg">Connect Telegram</button>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Sample Card -->
+    <div class="flex flex-col items-center justify-center w-full">
+      <h1 class="text-gray text-2xl mb-2">Best Price to Trade</h1>
+      <div class="flex max-md:text-xs text-2xl justify-between w-full items-center px-3 ">
+        <div class=" flex flex-col">
+          <p class="text-primary">0.09%</p>
+          <p class="text-gray">5 mins</p>
+        </div>
+        <div class=" flex flex-col">
+          <p class="text-primary">0.69%</p>
+          <p class="text-gray">1 hour</p>
+        </div>
+        <div class="w-2/6 flex flex-col">
+          <p class="text-primary text-3xl max-md:text-sm text-center" id="ChangeVal"><%= data[0]['sell'] %></p>
+          <p class="text-gray text-center">Average BTC/INR net price including commission </p>
+        </div>
+        <div class=" flex flex-col">
+          <p class="text-primary">6.39%</p>
+          <p class="text-gray">1 Day</p>
+        </div>
+        <div class=" flex flex-col">
+          <p class="text-primary">13.41%</p>
+          <p class="text-gray">7 Days</p>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <!-- table Header -->
+    <div class="w-full overflow-x-auto">
+    <div class=" flex flex-row justify-between gap-3 w-full px-3 mt-10 text-gray">
+      <div class="font-bold w-[233px] text-center ">
+        <p class="text-2xl max-md:text-xs">#</p>
+      </div>
+      <div class="font-bold w-2/12 text-center ">
+        <p class="text-2xl max-md:text-xs">Name</p>
+      </div>
+      <div class="font-bold w-2/12 text-center ">
+        <p class="text-2xl max-md:text-xs">Last Traded Price</p>
+      </div>
+      <div class="font-bold w-3/12 text-center ">
+        <p class="text-2xl max-md:text-xs">Buy/sell price</p>
+      </div>
+      <div class="font-bold w-2/12 text-center ">
+        <p class="text-2xl max-md:text-xs">Volume</p>
+      </div>
+      <div class="font-bold w-2/12 text-center ">
+        <p class="text-2xl max-md:text-xs">Base Unit</p>
+      </div>
+    </div>
+    <!-- Doc -->
+    <div class=" flex flex-col rounded-md  text-white gap-2 mt-3 max-md:text-xs">
+      <% data.forEach((info,index) => { %>
+        <div class=" flex flex-row justify-between gap-3 w-full px-3 bg-sltbtn rounded-lg whitespace-pre-wrap">
+          <div class="font-semibold w-[233px] text-center ">
+            <p class="text-xl max-md:text-xs"><%= index+1 %></p>
+          </div>
+          <div class="font-semibold w-2/12 text-center ">
+            <p class="text-xl max-md:text-xs"><%= info['name'] %></p>
+          </div>
+          <div class="font-semibold w-2/12 text-center ">
+            <p class="text-xl max-md:text-xs"><%= info["last"] %></p>
+          </div>
+          <div class="font-semibold w-3/12 text-center ">
+            <p class="text-xl max-md:text-xs"><%= info['buy'] %> / <%= info['sell'] %></p>
+          </div>
+          <div class="font-semibold w-2/12 text-center ">
+            <p class="text-xl max-md:text-xs"><%= info['volume'] %></p>
+          </div>
+          <div class="font-semibold w-2/12 text-center ">
+            <p class="text-xl max-md:text-xs"><%= info['base_unit'] %></p>
+          </div>
+        </div>
+      <% }) %>
+
+    </div>
+  </div>
+</body>
+</html>
