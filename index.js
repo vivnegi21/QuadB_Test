@@ -15,11 +15,9 @@ app.get('/', async (req, res) => {
         const result = await fetch('https://api.wazirx.com/api/v2/tickers').then(resp=>resp.json());
         const keys = Object.keys(result);
 
-        await mongoose.connect("mongodb://127.0.0.1:27017/test")
+        await mongoose.connect("mongodb://127.0.0.1:27017/")
             .then(()=>console.log("DB connected"))
             .catch((err)=>console.log(err));
-
-        await Crypto.deleteMany({});
 
         for(let i=0;i<10;i++){
             await Crypto.findOneAndUpdate(
